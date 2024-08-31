@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, } from "react-router-dom"
 const apiURL = 'https://dummyjson.com/products/'
-
 async function fetchProductData() {
   const randomNumber = Math.floor(Math.random() * 100)
   const productData = await fetch(`${apiURL}${randomNumber}`)
@@ -10,6 +9,7 @@ async function fetchProductData() {
 }
 
 export default function ProductCard() {
+
   const [productParams, setProductParams] = useState(null)
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function ProductCard() {
         const data = await fetchProductData()
         if (data) {
           setProductParams(data)
-          console.dir(productParams)
+          console.log(data)
         }
 
       } catch (e) {
@@ -28,24 +28,21 @@ export default function ProductCard() {
     fetchData()
   }, [])
 
-
   return (
 
-    <div className="flex flex-col gap-2 bg-white text-grey-superdark max-w-[200px] max-h-[350px] text-center rounded-md shadow-md">
+    <div className="flex flex-col gap-2 bg-white text-grey-superdark max-w-[200px] max-h-[400px] text-center rounded-md shadow-md">
 
       {productParams && (
         <>
-          <img src={productParams?.images[0]} alt="" height={200} width={200} />
+          <img src={productParams?.images?.[0]} alt="" height={200} width={200} />
           <h3>{productParams?.title}</h3>
           <span>${productParams?.price}</span>
-          <Link to={"/product"} title="Click me">Click me </Link>
+          <Link className="border border-solid rounded-md px-4 py-2 max-w-fit m-auto" to={`/product/${productParams.id}`} title="Click me">Click me </Link>
         </>
       )
       }
 
     </div>
   )
-
-
 
 }
